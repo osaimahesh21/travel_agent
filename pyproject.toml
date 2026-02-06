@@ -1,0 +1,39 @@
+
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "travel-assistant"
+version = "0.1.0"
+description = "Enterprise-style AI Travel Assistant using LangChain + RAG + Open-source LLM"
+requires-python = ">=3.10"
+dependencies = [
+  "langchain",
+  "langchain-community",
+  "chromadb",
+  "fastapi",
+  "uvicorn",
+  "pydantic>=2.0",
+  "pydantic-settings>=2.0",
+  "python-dotenv",
+  "httpx",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "ruff",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

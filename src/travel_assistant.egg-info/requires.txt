@@ -1,0 +1,14 @@
+langchain
+langchain-community
+chromadb
+fastapi
+uvicorn
+pydantic>=2.0
+pydantic-settings>=2.0
+python-dotenv
+httpx
+
+[dev]
+pytest
+pytest-cov
+ruff
