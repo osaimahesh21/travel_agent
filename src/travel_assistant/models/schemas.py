@@ -1,6 +1,21 @@
 from pydantic import BaseModel
-from typing import Optional, Dict
+from typing import Any, Optional, Dict
 
+class DocumentChunk(BaseModel):
+    """
+    Represents a chunk of text extracted from a document.
+
+    This is used during the ingestion and embedding process.
+    Each chunk will be embedded and stored in the vector database.
+    """
+
+    # The actual text content of the chunk
+    # Example: "The Eiffel Tower is located in Paris."
+    content: str
+
+    metadata: Optional[Dict[str, Any]] = None
+    # Example: {"source": "travel_guides", "page": 5}
+    chunk_id: Optional[str] = None
 
 class UserQuery(BaseModel):
     """
