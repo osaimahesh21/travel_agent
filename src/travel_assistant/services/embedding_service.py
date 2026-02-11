@@ -1,3 +1,8 @@
+import logging
+from typing import List
+
+logger = logging.getLogger(__name__)
+
 class EmbeddingService:
     """
     Converts text into vector embeddings using a chosen embedding model.
@@ -8,7 +13,7 @@ class EmbeddingService:
     - Encapsulate the embedding model
     """
 
-    def __init__(self, model_name: str):
+    def __init__(self, model_name: str, normalize: bool = True):
         """
         Initialize the embedding model.
 
@@ -16,19 +21,39 @@ class EmbeddingService:
             model_name: HuggingFace model name or any embedding model identifier
         """
         self.model_name = model_name
+        self.normalize = normalize
 
-    def embed_texts(self, texts: list[str]) -> list[list[float]]:
+        logger.info("Initialized EmbeddingService with model: %s", model_name)
+
+        from sentence_transformers import SentenceTransformer
+        self.model = SentenceTransformer(model_name, device='cpu')
+        self.embedding_dim = self.model.get_sentence_embedding_dimension()
+
+        logger.info("EmbeddingService init model=%s dim=%s", self.model_name, self.embedding_dim)
+
+
+    
+
+    def embed_texts(self, texts: list[str], batch_size: int = 64) -> list[list[float]]:
         """
-        Convert a list of texts into embeddings.
+        Convert a single string to embedding (wrapper over embed_texts)
 
         Args:
-            texts: List of input text strings
+            text: input string
 
         Returns:
-            List of embeddings (each embedding is a list of floats)
+            Embedding vector (list of floats)
         """
-        # Placeholder logic: return a dummy embedding for each text
-        return [[0.0] * 10 for _ in texts]
+
+        vector = self.model.encode(
+            texts,
+            batch_size=batch_size,
+            convert_to_numpy=True,
+            normalize_embeddings=self.normalize,
+            show_progress_bar=False,
+        )
+        return vector.tolist()
+    
 
     def embed_text(self, text: str) -> list[float]:
         """
@@ -40,4 +65,4 @@ class EmbeddingService:
         Returns:
             Embedding vector (list of floats)
         """
-        return self.embed_texts([text])[0]
+        return self.embed_texts([text], batch_size=1)[0]

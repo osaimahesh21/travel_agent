@@ -34,6 +34,10 @@ class Settings(BaseSettings):
     chunk_overlap: int = Field(default=200, ge=0, le=2000)
     top_k: int = Field(default=4, ge=1, le=20)
 
+    # Vector store (Chroma)
+    vector_store_dir: str = "vectorstore"
+    vector_store_collection: str = "travel_docs"
+
     def validate_chunking(self) -> None:
         """
         Validate relationships between chunking parameters.

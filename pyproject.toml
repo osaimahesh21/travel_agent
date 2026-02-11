@@ -19,6 +19,7 @@ dependencies = [
   "pydantic-settings>=2.0",
   "python-dotenv",
   "httpx",
+  "sentence-transformers"
 ]
 
 [project.optional-dependencies]
